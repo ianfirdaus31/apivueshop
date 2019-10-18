@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategoryResource extends ResourceCollection
+class CategoryResource extends JsonResource
 {
     /**
      * Transform the resource collection into an array.
@@ -14,10 +14,15 @@ class CategoryResource extends ResourceCollection
      */
     public function toArray($request)
     {
+        $parent = parent::toArray($request);
+
+        $data['books'] = $this->books()->paginate(6);
+        $data = array_merge($parent, $data);
         return [
             'status' => 'success',
-            'message' => 'categories data',
-            'data' => parent::toArray($request),
+            'message' => 'category data',
+            'data' => $data
         ];
+
     }
 }
